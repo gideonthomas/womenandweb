@@ -8,12 +8,13 @@ if(process.env.TRAVIS_PULL_REQUEST !== "false") {
 
 shell.echo(`Running deployment now...`);
 
-shell.exec(`git config user.name "Travis CI"`);
-shell.exec(`git config user.email "gideon@mozillafoundation.org"`)
+// shell.exec(`git config user.name "Travis CI"`);
+// shell.exec(`git config user.email "gideon@mozillafoundation.org"`)
 
 shell.exec(`git stash`);
-shell.exec(`git fetch origin master:master`)
-shell.exec(`git checkout --orphan gh-pages master`);
+// shell.exec(`git fetch origin master:master`)
+// shell.exec(`git checkout --orphan gh-pages master`);
+shell.exec(`git checkout -f --orphan gh-pages`);
 
 shell.exec(`npm run build`);
 
@@ -33,6 +34,8 @@ shell.mv(`dest/*`, `./`);
 shell.exec(`git reset`);
 shell.exec(`git add .`);
 shell.exec(`git commit -m 'Deployed via Travis'`);
-shell.exec(`git push -f https://${process.env.GH_TOKEN}@github.com/mozilla/womenandweb.git gh-pages:gh-pages`);
+shell.exec(`git push -f https://github.com/flukeout/womenandweb.git gh-pages:gh-pages`);
+shell.exec(`git checkout -`);
+shell.exec(`git stash pop`);
 
 shell.echo(`Finished deploying!`);
